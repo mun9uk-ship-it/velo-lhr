@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-10-11",
+  "hotels": [
+    {
+      "id": "aerotel-t3",
+      "name": "Aerotel London Heathrow",
+      "terminal": "T3",
+      "stars": null,
+      "category": "Airport / Transit",
+      "transport": "Walk (in-terminal)",
+      "travelTime": "2 min"
+    },
+    {
+      "id": "hgi-t2",
+      "name": "Hilton Garden Inn T2/T3",
+      "terminal": "T2",
+      "stars": 4,
+      "category": "Mid-range / Business",
+      "transport": "Walk (pedestrian tunnel)",
+      "travelTime": "5 min"
+    },
+    {
+      "id": "premier-t4",
+      "name": "Premier Inn T4",
+      "terminal": "T4",
+      "stars": 3,
+      "category": "Budget",
+      "transport": "Walk (covered walkway)",
+      "travelTime": "10 min"
+    },
+    {
+      "id": "sofitel-t5",
+      "name": "Sofitel London Heathrow T5",
+      "terminal": "T5",
+      "stars": 5,
+      "category": "Premium / Luxury",
+      "transport": "Walk (covered walkway)",
+      "travelTime": "5 min"
+    }
+  ]
+}

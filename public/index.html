@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0A0E1A" />
+  <title>Velo.LHR | Airport Area Hotel & Transport Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Velo<span>.LHR</span></h1>
+    <p class="tagline">Airport Area Hotel & Transport Guide (Heathrow Region)</p>
+    <p class="disclaimer">Not affiliated with Heathrow Airport Limited.</p>
+  </header>
+
+  <main>
+    <section class="search-section">
+      <div class="search-wrapper">
+        <input
+          type="search"
+          id="search"
+          placeholder="Start typing a hotel name (e.g. H for Hilton)..."
+          autocomplete="off"
+        />
+        <div id="suggestions" class="suggestions"></div>
+      </div>
+    </section>
+
+    <section id="hotel-detail"></section>
+  </main>
+
+  <footer>
+    <p>© Velo.LHR — Airport Area Hotel & Transport Guide</p>
+    <p class="footer-disclaimer">Not affiliated with Heathrow Airport Limited.</p>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

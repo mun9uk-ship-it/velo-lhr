@@ -1,0 +1,25 @@
+{
+  "name": "velo.lhr",
+  "version": "1.0.0",
+  "description": "Heathrow Airport hotel guide — search hotels, transport, and amenities near all terminals.",
+  "main": "public/index.html",
+  "scripts": {
+    "start": "npx serve public",
+    "build": "node scripts/generate-version.js",
+    "deploy": "gh-pages -d public"
+  },
+  "keywords": [
+    "heathrow",
+    "hotels",
+    "airport",
+    "travel",
+    "pwa",
+    "lhr"
+  ],
+  "author": "Muneer Ahmed",
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^6.0.0",
+    "serve": "^14.2.0"
+  }
+}
