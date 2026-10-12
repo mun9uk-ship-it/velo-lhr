@@ -1,25 +1,25 @@
 {
-  "name": "velo.lhr",
-  "version": "1.0.0",
-  "description": "Heathrow Airport hotel guide — search hotels, transport, and amenities near all terminals.",
+  "name": "velo-lhr",
+  "version": "1.0.1",
+  "description": "Velo.LHR — Progressive Web App for finding hotels near Heathrow Airport",
   "main": "public/index.html",
   "scripts": {
-    "start": "npx serve public",
     "build": "node scripts/generate-version.js",
-    "deploy": "gh-pages -d public"
+    "deploy": "aws s3 sync public/ s3://velo-lhr-bucket --delete",
+    "invalidate": "aws cloudfront create-invalidation --distribution-id $CF_DIST_ID --paths '/*'",
+    "start": "npx serve public -l 3000"
   },
   "keywords": [
+    "pwa",
     "heathrow",
     "hotels",
-    "airport",
-    "travel",
-    "pwa",
-    "lhr"
+    "aws",
+    "cloudfront",
+    "velo-lhr"
   ],
-  "author": "Muneer Ahmed",
+  "author": "VeloSights",
   "license": "MIT",
   "devDependencies": {
-    "gh-pages": "^6.0.0",
-    "serve": "^14.2.0"
+    "serve": "^14.2.1"
   }
 }

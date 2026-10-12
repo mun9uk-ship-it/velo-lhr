@@ -1,4 +1,4 @@
-name: Deploy Velo.LHR to AWS S3
+name: Deploy Velo.LHR to AWS
 
 on:
   push:
@@ -6,37 +6,68 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  id-token: write
-  contents: read
+env:
+  AWS_REGION: eu-west-2
+  S3_BUCKET: velo-lhr-bucket
+  CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
 
 jobs:
-  deploy:
-    name: Deploy to S3
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials via OIDC
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Generate version.json
+        run: npm run build
+
+      - name: Verify hotels.json
+        run: |
+          echo "Checking hotels.json..."
+          cat public/data/hotels.json | head -20
+          echo "Checking version.json..."
+          cat public/data/version.json
+
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: eu-west-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Sync public folder to S3
+      - name: Deploy to S3
         run: |
-          aws s3 sync public/ s3://velo-lhr-prod-350533424131-eu-west-2-an/ --delete
+          aws s3 sync public/ s3://${{ env.S3_BUCKET }} --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --exclude "index.html" \
+            --exclude "sw.js" \
+            --exclude "data/*" \
+            --exclude "manifest.json"
+
+          aws s3 sync public/ s3://${{ env.S3_BUCKET }} \
+            --cache-control "public, max-age=0, must-revalidate" \
+            --exclude "*" \
+            --include "index.html" \
+            --include "sw.js" \
+            --include "manifest.json" \
+            --include "data/*"
 
       - name: Invalidate CloudFront cache
-        env:
-          CF_DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
         run: |
-          if [ -n "$CF_DIST_ID" ]; then
-            aws cloudfront create-invalidation \
-              --distribution-id "$CF_DIST_ID" \
-              --paths "/*"
-          else
-            echo "CloudFront distribution ID not set, skipping invalidation."
-          fi
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+
+      - name: Deployment summary
+        run: |
+          echo "✅ Velo.LHR deployed successfully"
+          echo "🌐 https://velo.lhr.velosights.com"
