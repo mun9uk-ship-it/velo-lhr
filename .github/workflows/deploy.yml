@@ -30,8 +30,13 @@ jobs:
           aws s3 sync public/ s3://velo-lhr-prod-350533424131-eu-west-2-an/ --delete
 
       - name: Invalidate CloudFront cache
-        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        env:
+          CF_DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
         run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+          if [ -n "$CF_DIST_ID" ]; then
+            aws cloudfront create-invalidation \
+              --distribution-id "$CF_DIST_ID" \
+              --paths "/*"
+          else
+            echo "CloudFront distribution ID not set, skipping invalidation."
+          fi
