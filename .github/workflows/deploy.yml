@@ -8,7 +8,7 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  S3_BUCKET: velo-lhr-bucket
+  S3_BUCKET: velo-lhr-prod-350533424131-eu-west-2-an
   CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
 
 jobs:
