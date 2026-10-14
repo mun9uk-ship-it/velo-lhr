@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "lastUpdated": "2026-10-13T00:00:00Z",
+  "version": "1.0.1",
+  "lastUpdated": "2026-10-14T00:00:00Z",
   "entries": [
     {"id":"A001","type":"airline","name":"British Airways","aliases":["BA"],"terminals":["T3","T5"],"group":"oneworld","priority":1,"confidence":"high"},
     {"id":"A002","type":"airline","name":"Iberia","aliases":["IB","Madrid"],"terminals":["T5"],"group":"oneworld","priority":2,"confidence":"high"},
@@ -29,7 +29,6 @@
     {"id":"A025","type":"airline","name":"Lufthansa","aliases":["LH","Frankfurt","Munich"],"terminals":["T2"],"group":"Star Alliance","priority":1,"confidence":"high"},
     {"id":"A026","type":"airline","name":"Lufthansa City Airlines","aliases":["CL","Germany"],"terminals":["T2"],"group":"Star Alliance","priority":3,"confidence":"check"},
     {"id":"A027","type":"airline","name":"LOT Polish Airlines","aliases":["LO","Warsaw"],"terminals":["T2"],"group":"Star Alliance","priority":3,"confidence":"high"},
-    {"id":"A028","type":"airline","name":"Luxair","aliases":["LG","Luxembourg"],"terminals":["T2"],"group":"","priority":3,"confidence":"check"},
     {"id":"A029","type":"airline","name":"Middle East Airlines (MEA)","aliases":["ME","MEA","Beirut"],"terminals":["T2"],"group":"SkyTeam","priority":2,"confidence":"check"},
     {"id":"A030","type":"airline","name":"Scandinavian Airlines (SAS)","aliases":["SK","SAS","Scandinavian"],"terminals":["T2"],"group":"SkyTeam","priority":3,"confidence":"check"},
     {"id":"A031","type":"airline","name":"Shenzhen Airlines","aliases":["ZH","China"],"terminals":["T2"],"group":"Star Alliance","priority":3,"confidence":"check"},
@@ -54,7 +53,6 @@
     {"id":"A050","type":"airline","name":"Qantas","aliases":["QF","Sydney","Australia"],"terminals":["T3"],"group":"oneworld","priority":2,"confidence":"high"},
     {"id":"A051","type":"airline","name":"Royal Jordanian","aliases":["RJ","Amman"],"terminals":["T3"],"group":"oneworld","priority":2,"confidence":"check"},
     {"id":"A052","type":"airline","name":"SriLankan Airlines","aliases":["UL","Colombo"],"terminals":["T3"],"group":"oneworld","priority":3,"confidence":"check"},
-    {"id":"A053","type":"airline","name":"Tianjin Airlines","aliases":["GS","China"],"terminals":["T3"],"group":"","priority":3,"confidence":"check"},
     {"id":"A054","type":"airline","name":"Virgin Atlantic","aliases":["VS","Virgin","New York","Caribbean"],"terminals":["T3"],"group":"SkyTeam","priority":1,"confidence":"high"},
     {"id":"A055","type":"airline","name":"Air France","aliases":["AF","Paris","CDG"],"terminals":["T4"],"group":"SkyTeam","priority":1,"confidence":"high"},
     {"id":"A056","type":"airline","name":"Azerbaijan Airlines","aliases":["J2","AZAL","Baku"],"terminals":["T4"],"group":"","priority":3,"confidence":"high"},
@@ -74,7 +72,6 @@
     {"id":"A070","type":"airline","name":"Royal Brunei Airlines","aliases":["BI","Brunei"],"terminals":["T4"],"group":"","priority":3,"confidence":"high"},
     {"id":"A071","type":"airline","name":"Saudia","aliases":["SV","Saudi Arabian Airlines","Riyadh","Jeddah"],"terminals":["T4"],"group":"SkyTeam","priority":1,"confidence":"check"},
     {"id":"A072","type":"airline","name":"TAROM","aliases":["RO","Bucharest","Romania"],"terminals":["T4"],"group":"","priority":3,"confidence":"check"},
-    {"id":"A073","type":"airline","name":"Uzbekistan Airways","aliases":["HY","Tashkent"],"terminals":["T4"],"group":"","priority":3,"confidence":"check"},
     {"id":"A074","type":"airline","name":"Vietnam Airlines","aliases":["VN","Hanoi","Vietnam"],"terminals":["T4"],"group":"SkyTeam","priority":3,"confidence":"high"},
     {"id":"A075","type":"airline","name":"Vueling","aliases":["VY","Barcelona","Spain"],"terminals":["T4"],"group":"","priority":3,"confidence":"check"},
     {"id":"A076","type":"airline","name":"Xiamen Airlines","aliases":["MF","China"],"terminals":["T4"],"group":"SkyTeam","priority":3,"confidence":"check"},

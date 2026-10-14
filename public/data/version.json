@@ -1,14 +1,14 @@
 {
-  "version": "2.0.117-20261013-ecva",
-  "buildDate": "2026-10-13T23:59:11.014Z",
+  "version": "2.0.114-20261014-ay93",
+  "buildDate": "2026-10-14T00:24:31.719Z",
   "totalHotels": 26,
-  "totalEntries": 117,
+  "totalEntries": 114,
   "breakdown": {
     "hotels": 25,
-    "airlines": 76,
+    "airlines": 73,
     "buses": 12,
     "terminals": 4,
     "other": 0
   },
-  "checksum": "845c8bd0343d"
+  "checksum": "18e1ff4b6b72"
 }
