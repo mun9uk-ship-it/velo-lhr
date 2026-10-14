@@ -1,7 +1,9 @@
 /**
  * Velo.LHR - Build Script
- * Generates version.json with a unique version based on build time
- * and validates hotels.json exists and contains data.
+ *
+ * Generates version.json with a unique version based on build time.
+ * Validates hotels.json and search_index.json exist and contain data.
+ * Produces a combined checksum so the version bumps when either file changes.
  */
 
 const fs = require('fs');
@@ -11,7 +13,39 @@ const crypto = require('crypto');
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const DATA_DIR = path.join(PUBLIC_DIR, 'data');
 const HOTELS_FILE = path.join(DATA_DIR, 'hotels.json');
+const SEARCH_INDEX_FILE = path.join(DATA_DIR, 'search_index.json');
 const VERSION_FILE = path.join(DATA_DIR, 'version.json');
+
+/**
+ * Read and parse a JSON file with friendly error handling.
+ */
+function readJSON(filePath, label) {
+  if (!fs.existsSync(filePath)) {
+    console.error(`[Velo.LHR Build] ERROR: ${label} not found at ${filePath}`);
+    process.exit(1);
+  }
+  try {
+    const raw = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error(`[Velo.LHR Build] ERROR: Failed to parse ${label}: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+/**
+ * Count entries per category in the search index.
+ * Returns e.g. { hotel: 25, airline: 76, bus: 12, terminal: 4, total: 117 }
+ */
+function countCategories(entries) {
+  const counts = { hotel: 0, airline: 0, bus: 0, terminal: 0, other: 0, total: entries.length };
+  for (const entry of entries) {
+    const t = entry && entry.type;
+    if (t && counts[t] !== undefined) counts[t]++;
+    else counts.other++;
+  }
+  return counts;
+}
 
 function generateVersion() {
   console.log('[Velo.LHR Build] Starting version generation...');
@@ -21,22 +55,8 @@ function generateVersion() {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
 
-  // Validate hotels.json exists
-  if (!fs.existsSync(HOTELS_FILE)) {
-    console.error('[Velo.LHR Build] ERROR: hotels.json not found at', HOTELS_FILE);
-    process.exit(1);
-  }
-
-  // Read and parse hotels.json
-  let hotelsData;
-  try {
-    const raw = fs.readFileSync(HOTELS_FILE, 'utf8');
-    hotelsData = JSON.parse(raw);
-  } catch (err) {
-    console.error('[Velo.LHR Build] ERROR: Failed to parse hotels.json:', err.message);
-    process.exit(1);
-  }
-
+  // -------- Load hotels.json --------
+  const hotelsData = readJSON(HOTELS_FILE, 'hotels.json');
   const hotels = hotelsData.hotels || hotelsData;
   const hotelCount = Array.isArray(hotels) ? hotels.length : 0;
 
@@ -44,32 +64,61 @@ function generateVersion() {
     console.error('[Velo.LHR Build] ERROR: hotels.json contains no hotels');
     process.exit(1);
   }
-
   console.log(`[Velo.LHR Build] Found ${hotelCount} hotels in hotels.json`);
 
-  // Generate version based on build timestamp + hotel count
+  // -------- Load search_index.json --------
+  const searchIndexData = readJSON(SEARCH_INDEX_FILE, 'search_index.json');
+  const entries = searchIndexData.entries || [];
+
+  if (entries.length === 0) {
+    console.error('[Velo.LHR Build] ERROR: search_index.json contains no entries');
+    process.exit(1);
+  }
+
+  const counts = countCategories(entries);
+  console.log(
+    `[Velo.LHR Build] Found ${counts.total} search entries ` +
+    `(hotels: ${counts.hotel}, airlines: ${counts.airline}, ` +
+    `buses: ${counts.bus}, terminals: ${counts.terminal})`
+  );
+
+  // -------- Generate version --------
   const now = new Date();
   const buildTimestamp = now.toISOString();
-  const datePart = now.toISOString().slice(0, 10).replace(/-/g, '');
+  const datePart = buildTimestamp.slice(0, 10).replace(/-/g, '');
   const timePart = now.getTime().toString(36).slice(-4);
-  const version = `1.0.${hotelCount}-${datePart}-${timePart}`;
 
-  // Create checksum from hotels data
+  // Version format: MAJOR.MINOR.<entries>-<date>-<time>
+  // Any change to entries count or content produces a new version.
+  const version = `2.0.${counts.total}-${datePart}-${timePart}`;
+
+  // -------- Combined checksum --------
+  // Concatenate both datasets; changes to either produce a new hash.
+  const checksumInput = JSON.stringify({ hotels, entries });
   const checksum = crypto
     .createHash('md5')
-    .update(JSON.stringify(hotels))
+    .update(checksumInput)
     .digest('hex')
     .slice(0, 12);
 
+  // -------- Write version.json --------
   const versionData = {
-    version: version,
+    version,
     buildDate: buildTimestamp,
     totalHotels: hotelCount,
-    checksum: checksum
+    totalEntries: counts.total,
+    breakdown: {
+      hotels: counts.hotel,
+      airlines: counts.airline,
+      buses: counts.bus,
+      terminals: counts.terminal,
+      other: counts.other
+    },
+    checksum
   };
 
-  // Write version.json
   fs.writeFileSync(VERSION_FILE, JSON.stringify(versionData, null, 2), 'utf8');
+
   console.log('[Velo.LHR Build] version.json written:', version);
   console.log('[Velo.LHR Build] Checksum:', checksum);
   console.log('[Velo.LHR Build] Done.');

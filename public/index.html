@@ -1,45 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0A0E1A" />
-  <title>Velo.LHR | Airport Area Hotel & Transport Guide</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Velo.LHR — Airport Area Hotel & Transport Guide (Heathrow Region). Not affiliated with Heathrow Airport Limited.">
+  <meta name="theme-color" content="#0A0E1A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Velo.LHR</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
 </head>
 <body>
 
-  <header>
-    <h1>Velo<span>.LHR</span></h1>
-    <p class="tagline">Airport Area Hotel & Transport Guide (Heathrow Region)</p>
-    <p class="disclaimer">Not affiliated with Heathrow Airport Limited.</p>
+  <!-- Header -->
+  <header class="site-header">
+    <h1 class="site-title">Velo<span class="accent">.LHR</span></h1>
+    <p class="site-tagline">Airport Area Hotel &amp; Transport Guide (Heathrow Region)</p>
+    <p class="site-disclaimer">Not affiliated with Heathrow Airport Limited.</p>
   </header>
 
-  <main>
-    <section class="search-section">
-      <div class="search-wrapper">
+  <!-- Global disclaimer banner -->
+  <div class="disclaimer-banner">
+    <span>⚠️</span>
+    <span>Data may not be up to date — always verify with the service provider before travel.</span>
+  </div>
+
+  <!-- Main -->
+  <main class="site-main">
+    <!-- Search -->
+    <div class="search-wrapper">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
         <input
           type="search"
-          id="search"
-          placeholder="Start typing a hotel name (e.g. H for Hilton)..."
+          id="search-input"
+          placeholder="Search airline, hotel, bus..."
           autocomplete="off"
-        />
-        <div id="suggestions" class="suggestions"></div>
+          aria-label="Unified search"
+          aria-expanded="false"
+          aria-controls="search-dropdown"
+        >
+        <button id="clear-search" class="clear-btn hidden" aria-label="Clear">✕</button>
       </div>
-    </section>
 
-    <section id="hotel-detail"></section>
+      <!-- Grouped dropdown -->
+      <div id="search-dropdown" class="search-dropdown hidden" role="listbox"></div>
+    </div>
+
+    <!-- Inline detail card -->
+    <section id="detail-card" class="detail-card hidden"></section>
+
+    <!-- Status -->
+    <div id="status-bar" class="status-bar hidden">
+      <span id="status-text"></span>
+    </div>
   </main>
 
-  <footer>
-    <p>© Velo.LHR — Airport Area Hotel & Transport Guide</p>
-    <p class="footer-disclaimer">Not affiliated with Heathrow Airport Limited.</p>
+  <!-- Theme toggle -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <!-- Floating install button -->
+  <button id="install-fab" class="install-fab hidden" aria-label="Install Velo.LHR">
+    <span class="install-fab-icon">📲</span>
+    <span class="install-fab-text">Install</span>
+  </button>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>Velo.LHR · <span id="version-display">v2.0.0</span></p>
+    <p class="footer-note">Not affiliated with Heathrow Airport Limited.</p>
   </footer>
 
-  <script src="js/db.js"></script>
-  <script src="js/app.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 </html>
