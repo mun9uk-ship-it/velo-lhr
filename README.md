@@ -1,76 +1,115 @@
-# ✈️ Velo.LHR
+# ✈️ Velo.LHR — Serverless AWS PWA
 
 > Airport Area Hotel & Transport Guide (Heathrow Region)
 
-A Progressive Web App (PWA) that helps travellers find hotels near Heathrow Airport, compare amenities, check bus routes, and estimate travel time to each terminal.
+A live, production-ready Progressive Web App (PWA) that helps travellers find hotels, airlines, and transport options near Heathrow Airport. 
 
----
+🔗 **[Live Demo](https://velo.lhr.velosights.com)**
+
+![Velo.LHR Live App](docs/43-live-velo-lhr-app.png)
 
 ## ⚠️ Disclaimer
-
-**Velo.LHR is not affiliated with Heathrow Airport Limited.**
-
-"Heathrow" is used strictly as a geographic reference. All trademarks belong to their respective owners.
+**Velo.LHR is not affiliated with Heathrow Airport Limited.** "Heathrow" is used strictly as a geographic reference.
 
 ---
 
-## 🎯 Purpose
+## ☁️ Cloud Architecture & DevOps (The Real Project)
 
-Heathrow has **5 terminals** and **dozens of hotels** scattered around the airport area. Finding the right hotel with the right transport option is confusing.
+This isn't just a frontend tutorial. It is a fully deployed cloud project using modern AWS practices.
 
-**Velo.LHR** solves this by offering:
-
-- A searchable hotel directory
-- Terminal-based filtering (T2, T3, T4, T5)
-- Bus routes & Hotel Hoppa information
-- Walking distance indicators
-- Star ratings, phone, email, website
-- Offline access (PWA)
+*   **Hosting:** Amazon S3 (Static Web Hosting)
+*   **CDN & HTTPS:** Amazon CloudFront + AWS Certificate Manager (ACM)
+*   **Security:** AWS IAM with OpenID Connect (OIDC) — *Zero hardcoded passwords*.
+*   **CI/CD:** GitHub Actions (Automated deployment and cache invalidation).
+*   **Frontend:** Vanilla JS, Service Workers (Offline-first), IndexedDB.
 
 ---
 
-## 🏗️ Tech Stack
+## 🚧 Challenges Solved (The "Real" Engineering)
 
-| Layer | Technology |
-|---|---|
-| Frontend | HTML, CSS, Vanilla JS |
-| Storage | IndexedDB |
-| Offline | Service Worker |
-| Hosting | GitHub Pages |
-| CI/CD | GitHub Actions |
+1. **Secure CI/CD (No Passwords):** I ditched long-term AWS Access Keys. Instead, I set up an IAM Identity Provider for GitHub and created a Trust Policy that allows GitHub Actions to assume a temporary role via OIDC.
+2. **S3 Permissions:** Encountered an `AccessDenied` error during deployment. I resolved it by fine-tuning the IAM Policy to grant `s3:ListBucket` and `s3:PutObject` specifically to the `velo-lhr-prod` bucket.
+3. **Cache Invalidation:** Configured the CI/CD pipeline to automatically run `aws cloudfront create-invalidation` after every deployment to ensure users always see the latest version.
+4. **PWA Auto-Updates:** Built a custom version-checking mechanism using Service Workers and a `version.json` file. The app silently updates local IndexedDB data when a user reconnects.
+
+---
+
+## 📸 Project Showcase
+
+### 1. Automated CI/CD Pipeline
+*GitHub Actions successfully building, syncing to S3, and invalidating CloudFront.*
+![GitHub Actions](docs/31-github-actions-deploy-success.png)
+
+### 2. Serverless Hosting (S3 & CloudFront)
+*Files synced to the S3 bucket, served globally via CloudFront.*
+![S3 Bucket](docs/32-s3-files-synced-via-github.png)
+
+### 3. Secure HTTPS (AWS Certificate Manager)
+*Custom domain secured with an Amazon Issued SSL Certificate.*
+![ACM Certificate](docs/34-acm-certificate-issued.png)
+
+### 4. The Live Application
+*The final PWA running on `https://velo.lhr.velosights.com`.*
+![Live Site](docs/42-velo-lhr-live-on-https.png)
 
 ---
 
 ## 📂 Project Structure
 
+```text
 velo.lhr/
-├── .github/workflows/deploy.yml
+├── .github/workflows/
+│   └── deploy.yml          # AWS CI/CD Pipeline
 ├── public/
-│ ├── data/hotels.json
-│ ├── data/version.json
-│ ├── icons/
-│ ├── css/styles.css
-│ ├── js/app.js
-│ ├── js/db.js
-│ ├── index.html
-│ ├── manifest.json
-│ └── sw.js
-├── scripts/generate-version.js
-├── package.json
+│   ├── data/               # JSON Database
+│   ├── css/                # Styling
+│   ├── js/                 # App logic & IndexedDB
+│   ├── index.html
+│   ├── manifest.json       # PWA config
+│   └── sw.js               # Service Worker
+├── scripts/
+│   └── generate-version.js # Auto-update logic
+├── docs/                   # AWS Architecture Screenshots
 └── README.md
+```
 
 
 ---
 
 ## 🚀 Local Development
 
+1. Install dependencies:
+
 ```bash
 npm install
+```
+
+2. Run locally:
+
+```bash
 npm start
+```
 
-🌐 Deployment
+3. Build version.json:
 
-Automatically deployed to GitHub Pages via GitHub Actions on every push to main.
-📜 License
+```bash
+npm run build
+```
+---
 
-MIT © Muneer Ahmed
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Connect with Me
+
+I'm currently open to opportunities in **Cloud Engineering**, **DevOps**, and **AI Systems**!
+
+*   💼 **LinkedIn:** [Muneer Ahmed](https://www.linkedin.com/in/muneer-ahmed-it-cloud-ai-support)
+*   🌐 **Live App:** [Velo.LHR](https://velo.lhr.velosights.com)
+*   🐙 **GitHub:** [@mun9uk-ship-it](https://github.com/mun9uk-ship-it)
+
+Feel free to reach out if you have any questions about the AWS architecture or the CI/CD pipeline!
+
